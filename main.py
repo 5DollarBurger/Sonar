@@ -15,17 +15,22 @@
 import logging
 import os
 
-from langchain.agents import create_sql_agent
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
-from langchain.sql_database import SQLDatabase
+from dotenv import find_dotenv, load_dotenv
+# from langchain.agents import create_sql_agent
+# from langchain.agents.agent_toolkits import SQLDatabaseToolkit
+# from langchain.sql_database import SQLDatabase
 from langchain_google_genai import ChatGoogleGenerativeAI
 from slack_bolt import App
 from slack_bolt.adapter.socket_mode import SocketModeHandler
-from sqlalchemy import create_engine
+
+# from sqlalchemy import create_engine
 
 # -----------------------------------------------------------------------------
 # 1. Configuration & Credential Setup
 # -----------------------------------------------------------------------------
+
+
+load_dotenv(find_dotenv())
 
 # Use environment variables for secure credential management.
 # This is a best practice for corporate environments.
@@ -117,7 +122,7 @@ def handle_app_mention(say, body):
         # Invoke the LangChain agent with the user's question.
         # The agent will think, generate SQL, run it, and formulate a final answer.
         # response = sql_agent.invoke({"input": text_without_mention})
-        response = {"input": text_without_mention}
+        response = {"input": text_without_mention, "output": "Hello World!"}
         
         logger.info(f"Agent's response: {response}")
 
