@@ -1,0 +1,844 @@
+    tables:
+      - name: bin_datamart
+        table_description: Datamart of BIN details and issuer bank information
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: false
+        filter_by_country: false
+        columns:
+          - bin
+          - issuer
+          - issuer_country
+          - card_scheme
+          - card_type
+          - data_source
+        columns_description:
+          - bin: Bank Identification Number
+          - issuer: Name of issuing bank
+          - issuer_country: Country of card issuance
+          - card_scheme: Card network or card scheme
+          - card_type: Debit, credit, or charge card
+          - data_source: Source of issuing bank information
+
+      - name: fin_challenge
+        table_description: Fintech payment service challenge-level datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - challenge_id
+          - purchase_id
+          - external_reference_type
+          - external_payment_id
+          - status
+          - type
+          - active
+          - date_created
+          - date_updated
+          - metadata
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - challenge_id: Challenge identifier provided when challenge request is
+              created
+          - purchase_id: Payment identifier provided when payment request is created
+          - external_reference_type: Type of order
+          - external_payment_id: Payment identifier created by platform
+          - status: Final status outcome of challenge
+          - type: Type of challenge
+          - active: Whether the challenge is completed
+          - date_created: Timestamp the payment was created
+          - date_updated: Most recent timestamp the payment status was updated
+          - metadata: Metadata of challenge
+        # expectations:
+        #   - name: expect_column_values_to_not_be_null
+        #     columns:
+        #       - global_entity_id
+        #       - challenge_id
+
+      - name: fin_nrt_tokenization
+        table_description: Fintech payment service near-realtime tokenization operations
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - operation_id
+          - external_request_id
+          - psp_reference_id
+          - instrument_id
+          - external_instrument_id
+          - customer_id
+          - payment_method
+          - operation_status
+          - is_success
+          - redirect_data
+          - error_code
+          - error_message
+          - shadow_mode
+          - created_at
+          - updated_at
+          - completed_at
+          - card_bin
+          - card_scheme
+          - card_operation_type
+          - card_last_four_digits
+          - card_fingerprint
+          - is_tokenised_instrument
+          - provider
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - operation_id: Identifier of tokenization operation
+          - external_request_id: Identifier of external request
+          - psp_reference_id: Identifier of PSP reference
+          - instrument_id: Identifier of payment instrument
+          - external_instrument_id: External identifier of payment instrument
+          - customer_id: Identifier of customer
+          - payment_method: Payment method tokenized
+          - operation_status: Current status of tokenization operation
+          - is_success: Indicates if tokenization operation is successful
+          - redirect_data: Redirection metadata
+          - error_code: Tokenization failure error code
+          - error_message: Tokenization failure error message
+          - shadow_mode: Indicates if operation is in shadow mode
+          - created_at: Creation timestamp of tokenization request
+          - updated_at: Update timestamp of tokenization request
+          - completed_at: Completion timestamp of tokenization request
+          - card_bin: Bank Identification Number of card tokenized
+          - card_scheme: Scheme of card tokenized
+          - card_operation_type: Whether card tokenized is debit or credit card
+          - card_last_four_digits: Last four digits of card tokenized
+          - card_fingerprint: Fingerprint data of card tokenized
+          - is_tokenised_instrument: Indicated if instrument is tokenized
+          - provider: Payment service provider
+
+      - name: fin_nrt_transaction
+        table_description: Fintech payment service near-realtime transaction-level records
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - transaction_id
+          - record_datetime
+          - bin
+          - issuer
+          - payment_method
+          - provider
+          - channel_name
+          - payment_type
+          - operation_type
+          - operation_status
+          - acquirer_response
+          - transaction_initiator
+          - vertical
+          - gateway_name
+          - connector_status
+          - is_success
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - transaction_id: Identifier of transaction
+          - record_datetime: UTC datetime of transaction creation
+          - bin: Bank Identification Number
+          - issuer: Name of issuing bank
+          - payment_method: Payment method used for transaction
+          - provider: Payment service provider
+          - channel_name: Banking channel used for transaction
+          - payment_type: Type of payment
+          - operation_type: Type of operation
+          - operation_status: Current status of operation
+          - acquirer_response: Current response from acquirer
+          - transaction_initiator: Transaction initiator
+          - vertical: Vertical order was made from
+          - gateway_name: Name of payment gateway
+          - connector_status: Connector status
+          - is_success: Indicates if transaction is successful
+
+      - name: fin_payment
+        table_description: Fintech payment service payment-level datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - payment_id
+          - payer_type
+          - payer_id
+          - external_associate_type
+          - external_associate_id
+          - external_payment_id
+          - country_id
+          - payment_type
+          - concept
+          - initiative
+          - payment_method
+          - instrument_id
+          - external_instrument_id
+          - provider
+          - currency
+          - amount
+          - refunded_amount
+          - status
+          - reason
+          - operation_timestamp
+          - operation_datetime_local
+          - date_created
+          - last_updated_date
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - payment_id: Payment identifier created by fintech payment service
+          - payer_type: User or process initiating the payment
+          - payer_id: Unique identifier of paying entity
+          - external_associate_type: Type of entity
+          - external_associate_id: Identification of the entity to be paid created by platform
+          - external_payment_id: Payment identifier created by platform
+          - country_id: Country codes defined by ISO 3166-1 alpha-2 standards
+          - payment_type: Type of payment
+          - concept: Type of transaction for routing
+          - initiative: Vertical where order is made
+          - payment_method: Method of payment
+          - instrument_id: Unique identifier of payment instrument
+          - external_instrument_id: Unique identifier of payment instrument from platform
+          - provider: Name of Payment Service Provider
+          - currency: Currency of the payment
+          - amount: Payment amount
+          - refunded_amount: Amount refunded to payer
+          - status: Final status outcome of payment
+          - reason: Success or reasons for failure
+          - operation_timestamp: Operation timestamp of payment
+          - operation_datetime_local: Local operation datetime of payment
+          - date_created: Timestamp the payment was created
+          - last_updated_date: Most recent timestamp the payment status was updated
+        # expectations:
+        #   - name: expect_column_values_to_not_be_null
+        #     columns:
+        #       - global_entity_id
+        #       - payment_id
+        #   - name: expect_compound_columns_to_be_unique
+        #     column_list: [global_entity_id, payment_id]
+        #   - name: expect_column_min_to_be_between
+        #     params:
+        #       min_value: 0
+        #     columns:
+        #       - amount
+
+      - name: fin_payment_card
+        table_description: Fintech payment service card payment datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - payment_id
+          - external_payment_id
+          - payment_method
+          - provider_response_code
+          - provider_response_message
+          - card_type
+          - card_operation_type
+          - card_issuer
+          - card_bin
+          - card_last_four_digits
+          - card_fingerprint
+          - card_status
+          - gateway
+          - acquirer
+          - is_tokenisation_requested
+          - is_network_token_used
+          - date_created
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - payment_id: Payment identifier created by fintech payment service
+          - external_payment_id: Payment identifier created by platform
+          - payment_method: Payment method attempted
+          - provider_response_code: Payment Service Provider response code
+          - provider_response_message: Payment Service Provider response message
+          - card_type: Card scheme
+          - card_operation_type: Whether card debit or credit
+          - card_issuer: Name of issuing bank of card
+          - card_bin: Bank Identification Number of card
+          - card_last_four_digits: Last four digits of card
+          - card_fingerprint: Digital template of cardholder's fingerprint
+          - card_status: Whether the instrument is saved
+          - gateway: Name of payment gateway
+          - acquirer: Name of acquiring bank
+          - is_tokenisation_requested: Whether the payment encountered tokenisation
+              flow
+          - is_network_token_used: Indicates if a network token is used
+          - date_created: Timestamp the payment was created
+        # expectations:
+        #   - name: expect_column_values_to_not_be_null
+        #     columns:
+        #       - global_entity_id
+        #       - payment_id
+        #   - name: expect_compound_columns_to_be_unique
+        #     column_list: [global_entity_id, payment_id]
+
+      - name: fin_transaction
+        table_description: Fintech payment service transaction-level datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - transaction_id
+          - payment_id
+          - external_payment_id
+          - external_associate_id
+          - external_reference_type
+          - operation
+          - amount
+          - currency
+          - status
+          - reason
+          - provider_response_code
+          - provider_response_message
+          - provider_full_response
+          - psp_transaction_id
+          - date_created
+          - last_updated_date
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - transaction_id: Transaction identifier provided when transaction is created
+          - payment_id: Payment identifier provided when payment request is created
+          - external_payment_id: Payment identifier created by platform
+          - external_associate_id: Order identifier created by platform
+          - external_reference_type: Type of payment transaction is for
+          - operation: Type of operation
+          - amount: Payment amount
+          - currency: Currency of the payment
+          - status: Final status outcome of transaction
+          - reason: Success or reasons for failure
+          - provider_response_code: Payment Service Provider response code
+          - provider_response_message: Payment Service Provider response message
+          - provider_full_response: Full response from Payment Service Provider
+          - psp_transaction_id: Transaction identifier from Payment Service Provider
+          - date_created: Timestamp the transaction was created
+          - last_updated_date: Most recent timestamp the transaction status was updated
+        # expectations:
+        #   - name: expect_column_values_to_not_be_null
+        #     columns:
+        #       - global_entity_id
+        #       - transaction_id
+        #   - name: expect_compound_columns_to_be_unique
+        #     column_list: [global_entity_id, transaction_id]
+        #   - name: expect_column_min_to_be_between
+        #     params:
+        #       min_value: 0
+        #     columns:
+        #       - amount
+
+      - name: fin_transaction_card
+        table_description: Fintech payment service card transaction datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - transaction_id
+          - psp_transaction_id
+          - gateway_transaction_id
+          - gateway
+          - gateway_response
+          - acquirer
+          - merchant_id
+          - commerce_number
+          - transaction_number
+          - authorization_code
+          - business_contract_id
+          - business_contract_qualifier
+          - last_updated_date
+          - date_created
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - transaction_id: Transaction identifier provided when transaction is created
+          - psp_transaction_id: Transaction identifier from Payment Service Provider
+          - gateway_transaction_id: Gateway operation identifier
+          - gateway: Name of payment gateway
+          - gateway_response: Response from payment gateway
+          - acquirer: Name of acquiring bank
+          - merchant_id: Merchant identifier provided when payment is created
+          - commerce_number: Commerce number assigned by acquiring bank
+          - transaction_number: Transaction number
+          - authorization_code: Authorization code
+          - business_contract_id: Business contract identifier
+          - business_contract_qualifier: Conditions for business contract to be used in transaction
+          - date_created: Timestamp the payment was created
+          - last_updated_date: Most recent timestamp the payment status was updated
+        # expectations:
+        #   - name: expect_column_values_to_not_be_null
+        #     columns:
+        #       - global_entity_id
+        #       - transaction_id
+        #   - name: expect_compound_columns_to_be_unique
+        #     column_list: [global_entity_id, transaction_id]
+
+      - name: fin_transaction_realtime
+        table_description: Fintech payment service realtime transactions
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - transaction_id
+          - record_datetime
+          - record_datetime_5_min
+          - bin
+          - issuer
+          - payment_method
+          - provider
+          - channel_name
+          - payment_type
+          - operation_type
+          - operation_status
+          - acquirer_response
+          - transaction_initiator
+          - vertical
+          - connector_status
+          - is_success
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - transaction_id: Transaction identifier provided when transaction is created
+          - record_datetime: Timestamp of transaction creation
+          - record_datetime_5_min: Timestamp of transaction creation rounded down to nearest 5 minutes
+          - bin: Bank Identification Number
+          - issuer: Name of issuing bank
+          - payment_method: Payment method used for transaction
+          - provider: Payment service provider
+          - channel_name: Banking channel used for transaction
+          - payment_type: Type of payment
+          - operation_type: Type of operation
+          - operation_status: Current status of operation
+          - acquirer_response: Current response from acquirer
+          - transaction_initiator: Transaction initiator
+          - vertical: Vertical order was made from
+          - connector_status: Connector status
+          - is_success: Indicates if transaction is successful
+
+      - name: cob_hva_approval_first_order
+        table_description: Cobranded card High Value Action analysis datamart
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - analytical_customer_id
+          - approval_date
+          - order_id
+          - order_date
+        columns_description:
+          - global_entity_id: Identifier of the global entity where first order after
+              cobranded card approval is made
+          - analytical_customer_id: Analytical customer ID calculated by UUID (Universally
+              unique identifier) process to uniquely identify actual, analytically-recognised
+              and grouped customers
+          - approval_date: Customer's approval date for cobranded card
+          - order_id: Platform backend identifier of customer's first order made after
+              cobranded card approval
+          - order_date: Date of customer's first order made after cobranded card approval
+
+      - name: ops_order
+        table_description: Curated successful orders with card details
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - order_id
+          - customer_id
+          - order_date
+          - order_date_local
+          - order_datetime
+          - order_datetime_local
+          - payment_method
+          - bin
+          - issuer
+          - issuer_country
+          - card_scheme
+          - card_type
+          - gmv_eur
+          - gmv_local
+          - gfv_eur
+          - gfv_local
+          - local_currency
+          - vertical
+          - subscription_status
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - order_id: Identifier of order
+          - customer_id: Identifier of customer
+          - order_date: UTC date of order
+          - order_date_local: Local date of order
+          - order_datetime: UTC date and time of order
+          - order_datetime_local: Local date and time of order
+          - payment_method: Payment method of order
+          - bin: Bank Identification Number of card used in order
+          - issuer: Name of issuing bank
+          - issuer_country: Country of card issuance
+          - card_scheme: Card network or card scheme
+          - card_type: Debit, credit, or charge card
+          - gmv_eur: GMV amount in euros
+          - gmv_local: GMV amount in local currency
+          - gfv_eur: GFV amount in euros
+          - gfv_local: GFV amount in local currency
+          - local_currency: Local currency of order
+          - vertical: Vertical order was made from
+          - subscription_status: Subscription status of customer at time of order
+
+      - name: rec_alfred_rank
+        table_description: Ranked recommendations of Alfred instruments for each customer
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - customer_id
+          - alfred_instrument_id
+          - alfred_instrument_rank
+          - version
+          - updated_at
+        columns_description:
+          - global_entity_id: Identifier of the global entity where customer's Alfred
+              instrument was created
+          - customer_id: Identifier of customer
+          - alfred_instrument_id: Internal identifier of Alfred instruments
+          - alfred_instrument_rank: Ranking of instrument, with 1 being the best
+          - version: Recommender version number identifying unique combination of
+              performance prediction and recommendation rules
+          - updated_at: Date instrument was ranked for by given recommender version
+
+      - name: rec_alfred_rank_inc
+        table_description: Incremental ranked recommendations of Alfred instruments for each customer
+        is_view: true
+        create_shared_view: false
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - customer_id
+          - alfred_instrument_id
+          - alfred_instrument_rank
+          - version
+          - updated_at
+          - increment_type
+        columns_description:
+          - global_entity_id: Identifier of the global entity where customer's Alfred
+              instrument was created
+          - customer_id: Identifier of customer
+          - alfred_instrument_id: Internal identifier of Alfred instruments
+          - alfred_instrument_rank: Ranking of instrument, with 1 being the best, -1 indicates deletion
+          - version: Recommender version number identifying unique combination of
+              performance prediction and recommendation rules
+          - updated_at: Date instrument recommendation was updated_at
+          - increment_type: Type of CRUD operation to perform on recommendation record in backend
+
+      - name: rec_instrument_datamart
+        table_description: Instrument-level datamart, with each payment instrument
+          representing active payment instruments available to the customer
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - analytical_instrument_id
+          - customer_id
+          - payment_method
+          - alfred_instrument_id
+          - display_value
+          - card_scheme
+          - valid_to_year
+          - valid_to_month
+          - is_tokenized
+          - psp_identifier
+          - wallet_id
+          - external_account_id
+          - alfred_creation_date
+          - instrument_type
+          - bin
+          - last_4_digit
+          - last_2_digit
+          - card_type
+          - date_last_success
+          - is_preferred
+        columns_description:
+          - global_entity_id: Identifier of the global entity where customer's Alfred
+              instrument was created
+          - customer_id: Identifier of customer
+          - payment_method: Payment method of instrument
+          - alfred_instrument_id: Internal identifier of Alfred instruments
+          - display_value: Display information used to represent payment instrument
+              in frontend
+          - card_scheme: Card scheme of card instruments
+          - valid_to_year: Expiry year of payment instrument
+          - valid_to_month: Expiry month of payment instrument
+          - is_tokenized: Whether payment instrument is tokenized
+          - psp_identifier: Payment service provider of instrument
+          - wallet_id: Customer's wallet identifier
+          - external_account_id: Account identifier created by platform
+          - alfred_creation_date: Date of payment instrument creation in Alfred
+          - instrument_type: Whether instrument is card, cash, or alternative payment
+              instrument
+          - bin: Bank identification number
+          - last_4_digit: Last four digits of card number
+          - last_2_digit: Last two digits of card number
+          - card_type: Whether card is credit or debit
+          - date_last_success: Date of last successful transaction
+          - is_preferred: Whether payment instrument is configured as preferred in
+              Alfred
+
+      - name: rec_experiment_order
+        table_description: Parent order level records for recommender payment performance
+          uplift experiment
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - global_entity_id
+          - parent_order_id
+          - order_date
+          - customer_id
+          - experiment_id
+          - assignment_user_id
+          - variant
+          - payment_method_initial
+          - payment_method_final
+          - failure_reason
+          - total_recovered_orders
+          - is_recovery_diff_pm
+          - is_success_same_pm
+          - is_fail
+        columns_description:
+          - global_entity_id: Identifier of the global entity
+          - parent_order_id: Identifier of purchase intent which initially failed,
+              first attempt order identifier
+          - order_date: Date of purchase intent
+          - customer_id: Identifier of customer
+          - experiment_id: Identifier of experiment
+          - assignment_user_id: Global identifier of customer assigned to experiment
+          - variant: Indicates if order was made by control or variant customer
+          - payment_method_initial: First payment method attempted and failed
+          - payment_method_final: Last payment method attempted
+          - failure_reason: Initial failure reason of first payment method
+          - total_recovered_orders: Indicator if purchase intent was recovered or successfully retried
+          - is_recovery_diff_pm: Indicator if purchase intent was recovered with a
+              different payment method
+          - is_success_same_pm: Indicator if purchase intent was successfully retried
+              with the same payment method as first attempt
+          - is_fail: Indicator if purchase intent failed
+
+      - name: sub_order_datamart
+        table_description: Subscription order-level datamart, each record represents
+          a purchase intent
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - parent_order_id
+          - region
+          - country
+          - global_entity_id
+          - customer_code
+          - subscription_date
+          - payment_method
+          - payment_status
+          - final_payment_status
+          - payment_status_category
+          - is_renewal
+          - cit_mit
+          - subscription_status
+          - subscription_moment
+          - card_type
+          - card_bin
+          - is_psp
+          - psp
+          - psp_acquirer
+          - psp_merchant_account
+          - psp_payment_method
+          - psp_payment_method_detailed
+          - psp_authorization_type
+          - psp_authorization_status
+          - psp_operation_status
+          - acquirer_raw_response
+          - attempt_count
+          - total_amount_local
+          - subscription_code
+          - subscription_package
+          - platform
+          - decline_reason
+          - currency_code
+        columns_description:
+          - parent_order_id: Unique identifier for subscriptions purchase intent
+          - region: Region where subscription order is placed
+          - country: Country where subscription order is placed
+          - global_entity_id: Identifier of the global entity where subscription order
+              is placed
+          - customer_code: Identifier of customer placing the the subscription order
+          - subscription_date: Starting date of the subscription purchase intent
+          - payment_method: Last payment method attempted
+          - payment_status: Final payment status on first day of attempt
+          - final_payment_status: Final payment status of last attempt
+          - payment_status_category: Final payment status category
+          - is_renewal: Indicator if purchase attempt is renewal
+          - cit_mit: Indicates if initial attempt is customer or merchant initiated
+          - subscription_status: Status of subscription
+          - subscription_moment: Category of subscription purchase; enrolment, tier
+              update, or renewal
+          - card_type: Card type for payment method used
+          - card_bin: Card BIN for payment method used
+          - is_psp: Indicates if payment method is a PSP
+          - psp: Payment Service Provider used on initial attempt
+          - psp_acquirer: PSP acquirer used
+          - psp_merchant_account: PSP merchant account used
+          - psp_payment_method: Payment method used on initial attempt
+          - psp_payment_method_detailed: Detailed payment method used on initial attempt
+          - psp_authorization_type: Type of PSP authorization
+          - psp_authorization_status: PSP authorization status
+          - psp_operation_status: PSP gateway operation status
+          - acquirer_raw_response: Acquirer raw response
+          - attempt_count: Number of attempts on first day of purchase intent
+          - total_amount_local: Transaction amount for subscription purchase
+          - subscription_code: Customer's subscription code
+          - subscription_package: Number of months for each renewal
+          - platform: Plaform customer is subscribed to
+          - decline_reason: Reason for payment decline
+          - currency_code: Transaction currency for subscription purchase
+
+      - name: threeds_orders_datamart
+        table_description: 3DS order-level datamart, each record represents a transaction
+          that went through 3DS
+        is_view: true
+        create_shared_view: true
+        authorise_view:
+          dataset_id: rl_fintech
+        filter_by_entity: true
+        filter_by_country: false
+        entity_id_column: global_entity_id
+        columns:
+          - region
+          - country
+          - global_entity_id
+          - order_id
+          - received_payments_amt_eur
+          - merchant_account
+          - psp_name
+          - psp_received_date
+          - authorization_type
+          - authorization_status
+          - payment_method
+          - payment_method_detailed
+          - issuer_name
+          - acquirer
+          - acquirer_response
+          - threeds_flag
+          - threeds_version
+          - directory_response_3d
+          - authentication_response_3d
+          - sca_retry
+          - sca_exemption_requested
+          - threeds_completion_indicator
+          - acs_challenge_mandated
+          - liability_shift
+          - threeds2_fallback
+          - threeds2_fallback_directory_response
+          - challenge_cancel
+          - antifraud_reason
+          - antifraud_reason_detail
+          - trans_status_reason
+          - vertical_type
+          - payment_type
+        columns_description:
+          - region: Region where 3DS order was placed
+          - country: Country where 3DS order was placed
+          - global_entity_id: Identifier of the global entity where 3DS order is placed
+          - order_id: Unique identifier for 3DS order
+          - received_payments_amt_eur: Received payment amount in EUR
+          - merchant_account: Merchant account of 3DS order
+          - psp_name: Payment Service Provider of 3DS transaction
+          - psp_received_date: Date transaction is received by Payment Service Provider
+          - authorization_type: Type of authorization applied to transaction request
+          - authorization_status: Final status of authorization of transaction request
+          - payment_method: Payment method used for transaction
+          - payment_method_detailed: Detailed payment method information used for
+              transaction
+          - issuer_name: Issuing bank
+          - acquirer: Acquiring bank
+          - acquirer_response: Final response from acquirer
+          - threeds_flag: Whether transaction is flagged for 3DS
+          - threeds_version: Version of 3DS applied to transaction
+          - directory_response_3d: Directory response
+          - authentication_response_3d: Authentication response
+          - sca_retry: Whether Strong Customer Authentication is retried
+          - sca_exemption_requested: Whether exemption from Strong Customer Authentication
+              is requested
+          - threeds_completion_indicator: Final status of 3DS completion
+          - acs_challenge_mandated: Whether Authentication Challenge Service is mandated
+          - liability_shift: Liability shift
+          - threeds2_fallback: 3DS fallback
+          - threeds2_fallback_directory_response: 3DS fallback directory response
+          - challenge_cancel: Challenge cancellation response
+          - antifraud_reason: Antifraud reason for 3DS challenge
+          - antifraud_reason_detail: Detailed Antifraud reason for 3DS challenge
+          - trans_status_reason: Reason for transaction status
+          - vertical_type: Vertical type
+          - payment_type: Online payment or wallet top-up

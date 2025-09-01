@@ -15,6 +15,7 @@
 import logging
 import os
 
+import yaml
 from dotenv import find_dotenv, load_dotenv
 # from langchain.agents import create_sql_agent
 # from langchain.agents.agent_toolkits import SQLDatabaseToolkit
@@ -62,7 +63,7 @@ app = App(token=SLACK_BOT_TOKEN)
 # First, initialize the LLM.
 # We're using a Google-provided model here.
 llm = ChatGoogleGenerativeAI(
-    model="gemini-1.5-flash-preview-05-20",
+    model="gemini-2.5-flash",
     google_api_key=GOOGLE_API_KEY,
     temperature=0.1
 )
@@ -113,7 +114,7 @@ def handle_app_mention(say, body):
         # The bot mention is at the start, so we remove it.
         text_without_mention = body['event']['text'].split(' ', 1)[1]
         user_id = body['event']['user']
-        
+        print("test")
         logger.info(f"Received query from user {user_id}: {text_without_mention}")
         
         # Post an initial message to the channel to indicate the bot is working.
@@ -122,12 +123,20 @@ def handle_app_mention(say, body):
         # Invoke the LangChain agent with the user's question.
         # The agent will think, generate SQL, run it, and formulate a final answer.
         # response = sql_agent.invoke({"input": text_without_mention})
-        response = {"input": text_without_mention, "output": "Hello World!"}
+        # response = {"input": text_without_mention, "output": "Hello World!"}
+
+        metadata = ""
+        with open('curated_metadata.yml', 'r') as f:
+            metadata = yaml.load(f, Loader=yaml.SafeLoader)
+
+        prompt = f"You are a friendly technical support agent for a payment analytics team. This is the question from stakeholder: {text_without_mention}. Please start with the simplest solutions first. If they are asking SQL query this is the table metadata: {metadata}"
+
+        response = llm.invoke(prompt)
         
-        logger.info(f"Agent's response: {response}")
+        logger.info(f"Agent's response: {response.content}")
 
         # Post the final, formatted answer back to Slack.
-        say(f"Here is what I found:\n\n{response['output']}")
+        say(f"Here is what I found:\n\n{response.content}")
 
     except Exception as e:
         logger.error(f"An error occurred: {e}")
