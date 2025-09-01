@@ -1,0 +1,254 @@
+tables:
+      - name: platform_orders
+        create_shared_view: true
+        filter_by_country: false
+        filter_by_entity: true
+        entity_id_column: global_entity_id
+        is_view: true
+        authorise_view:
+          dataset_id: dm_fintech
+        columns:
+          - region
+          - country_name
+          - global_entity_id
+          - order_id
+          - is_parent_order
+          - parent_order_id
+          - customer_code
+          - order_datetime
+          - order_date
+          - payment_status
+          - payment_status_grouped
+          - payment_status_category
+          - payment_type
+          - payment_method
+          - payment_method_detailed
+          - is_mixed_payment
+          - vertical
+          - amt_gmv_lc
+          - local_currency
+          - amt_gmv_eur
+          - order_device
+          - app_version
+          - vendor_id
+          - vendor_city
+          - order_status
+          - decline_reason
+          - is_vendor_accepted
+          - delivery_type
+          - is_delivered
+          - is_processed
+          - is_async_payment_mode
+          - is_checkout_api
+          - data_source
+          - is_first_attempt
+          - is_last_attempt
+          - attempts_count
+          - is_voucher_used
+          - voucher_code
+          - final_amount
+          - initial_amount_accounting
+          - final_amount_accounting
+          - initial_amount
+          - is_billable
+          - parent_order_first_payment_type
+          - parent_order_last_payment_type
+          - parent_order_payment_method
+          - parent_order_last_payment_method
+          - parent_order_acceptance_status
+          - parent_order_acceptance_status_detailed
+          - transaction_id
+          - routing_condition
+          - mixed_payment_details
+          - is_parent_attempt
+          - payment_attempt_id
+          - purchase_id
+        columns_description:
+          - amt_gmv_eur: "GMV amount in euros"
+          - amt_gmv_lc: "GMV amount in local currency"
+          - app_version: "App version number"
+          - attempts_count: "Number of order attempts - only available for parent order id"
+          - country_name: "Country of the order"
+          - customer_code: "Unique identifier of the customer"
+          - data_source: "Data source where we source the data"
+          - decline_reason: "Backend decline reason"
+          - delivery_type: "Delivery type. Eg: OWN_DELIVERY, PICKUP, VENDOR_DELIVERY"
+          - final_amount: "Final local amount of the order"
+          - final_amount_accounting: "Final amount accounting for the order"
+          - global_entity_id: "Identifier of the global entity/brand"
+          - initial_amount: "Initial local amount of the order"
+          - initial_amount_accounting: "Initial amount accounting for the order"
+          - is_async_payment_mode: "Boolean if payment mode is_async"
+          - is_billable: "Flag that is 'true' if the order is payable to vendor"
+          - is_checkout_api: "Boolean to identify if checkout API or HPP"
+          - is_delivered: "If the order was delivered"
+          - is_first_attempt: "Boolean to identify if first order"
+          - is_last_attempt: "Boolean to identify if last order"
+          - is_mixed_payment: "Indicating whether the purchase was using combination of payment methods. Such as gift_cards, wallet, etc"
+          - is_parent_order: "boolean flag if the respective order is a parent order i.e. the latest attempt based on the criteria among the orders with the same GMV amount from the same entity, same vendor/restaurant, same customer given on the same day"
+          - is_processed: "If the order was processed"
+          - is_vendor_accepted: "Boolean to identify if it was accepted by vendor"
+          - is_voucher_used: "Boolean to identify if voucher was applied"
+          - local_currency: "Local currency code"
+          - order_date: "UTC date indicating when the order was generated"
+          - order_datetime: "UTC datetime indicating when the order was generated"
+          - order_device: "Backend device information"
+          - order_id: "unique identifier of the order"
+          - order_status: "Backend order status"
+          - parent_order_acceptance_status: "The aggregate status of purchase from overall order attempts"
+          - parent_order_acceptance_status_detailed: "The aggregate detailed status of purchase from overall order attempts"
+          - parent_order_first_payment_type: "Payment Type on the first attempt of purchase"
+          - parent_order_id: "ID indicates of intended customer purchase based on same date, basket amount and same amount"
+          - parent_order_last_payment_method: "Payment Method on the last attempt of purchase"
+          - parent_order_last_payment_type: "Last payment type from parent order"
+          - parent_order_payment_method: "Payment Method on the first attempt of purchase"
+          - payment_method: "Backend payment method"
+          - payment_method_detailed: "Backend payment method detailed"
+          - payment_status: "Payment status as appear in backend"
+          - payment_status_category: "Payment status categorised in success or fail"
+          - payment_status_grouped: "Payment status grouped between success vs others non-successful statuses"
+          - payment_type: "Backend payment type"
+          - region: "Region of the order"
+          - vendor_city: "City in which the vendor is located"
+          - vendor_id: "Unique identifier for the vendor/restaurant"
+          - vertical: "Vertical information of the vendor/restaurant"
+          - voucher_code: "Unique identifier for voucher"
+          - transaction_id: "Order number, indicates the id of each transactions of order"
+          - is_parent_attempt: "Boolean to identify if the order is parent attempt"
+          - payment_attempt_id: "Unique identifier for each attempt of the order"
+          - purchase_id: "Unique identifier for each purchase of the order"
+        table_description: "Contains information for Pandora, Talabat, Zomato, Instashop and PedidosYa in an order level."
+
+      - name: ar_order_level_detail
+        is_view: true
+        create_shared_view: true
+        filter_by_country: false
+        filter_by_entity: true
+        entity_id_column: global_entity_id
+        authorise_view:
+          dataset_id: rl_fintech
+        columns:
+          - region
+          - country
+          - global_entity_id
+          - customer_code
+          - order_date
+          - order_datetime
+          - order_id
+          - parent_order_id
+          - acceptance_status
+          - acceptance_status_detailed
+          - order_attempts
+          - order_gmv_eur
+          - vertical
+          - order_device
+          - first_payment_type
+          - first_payment_method
+          - first_payment_status
+          - first_payment_status_grouped
+          - first_payment_status_category
+          - is_alfred
+          - is_psp
+          - psp
+          - psp_acquirer
+          - psp_merchant_account
+          - psp_payment_method
+          - psp_payment_method_detailed
+          - psp_authorization_type
+          - psp_authorization_status
+          - psp_operation_status
+          - psp_actionability
+          - psp_acquirer_response
+          - last_payment_type
+          - last_payment_method
+          - last_payment_status
+          - last_payment_status_grouped
+          - last_payment_Status_category
+          - is_async_payment_mode
+          - is_mixed_payment
+          - app_version
+          - is_cyprus
+          - data_source
+          - alfred_gateway_id
+          - gateway_version
+          - payment_instrument_status
+          - routing_condition
+          - payment_service
+          - parent_order_payment_service
+          - revamp_error_message
+          - revamp_operation_status
+          - antifraud_decision
+          - is_parent_order
+          - order_gmv_lc
+          - parent_routing_condition
+          - payment_method
+          - payment_method_detailed
+          - payment_status_category
+          - shadow_mode
+          - vendor_id
+          - alfred_error_message
+          - alf_rev_auth_status
+          - alf_rev_latency
+        columns_description:
+          - region: "Region of payment when it's taken place"
+          - country: "Country of payment when it's taken place"
+          - global_entity_id: "Identifier of the global entity/brand"
+          - customer_code: "Unique identifier of the customer"
+          - order_date: "UTC date indicating when the order was generated"
+          - order_datetime: "UTC datetime indicating when the order was generated"
+          - order_id: "Unique identifier of the order"
+          - parent_order_id: "ID indicates intended customer purchase based on the same date, basket amount, and same amount"
+          - acceptance_status: "The aggregate status of purchase from overall order attempts"
+          - acceptance_status_detailed: "The aggregate detailed status of purchase from overall order attempts"
+          - order_attempts: "Number of order attempts - only available for parent order id"
+          - order_gmv_eur: "GMV amount in euros"
+          - vertical: "Vertical information of the vendor/restaurant"
+          - order_device: "Backend device information"
+          - first_payment_type: "Payment Type on the first attempt of purchase"
+          - first_payment_method: "Payment Method on the first attempt of purchase"
+          - first_payment_status: "First attempt payment status as appears in the backend"
+          - first_payment_status_grouped: "First attempt payment status grouped between success vs others non-successful statuses"
+          - first_payment_status_category: "First attempt payment status categorized as success or fail"
+          - is_alfred: "Indicates whether the order took place through Alfred"
+          - is_psp: "Indicates whether we have PSP data on this payment attempt"
+          - psp: "Name of Payment Service Provider data source"
+          - psp_acquirer: "Name of the acquirer that processed the original payment"
+          - psp_merchant_account: "Name of the merchant account used to process the original payment request"
+          - psp_payment_method: "Name of the payment method which was processed"
+          - psp_payment_method_detailed: "Detailed payment method name if available"
+          - psp_authorization_type: "Transaction type, whether a recurring (saved) payment method is used"
+          - psp_authorization_status: "Authorization status of each transaction"
+          - psp_operation_status: "Normalized operation status based on PSP's acquirer raw response"
+          - psp_actionability: "Indicator whether the decline shown in psp_operation_status is actionable"
+          - psp_acquirer_response: "Normalized response from the acquirer (not necessarily the final status of the payment)"
+          - last_payment_type: "Payment Type on the last attempt of purchase"
+          - last_payment_method: "Payment Method on the last attempt of purchase"
+          - last_payment_status: "Last attempt payment status as appears in backend"
+          - last_payment_status_grouped: "Last attempt payment status grouped between success vs others non-successful statuses"
+          - last_payment_status_category: "Last attempt payment status categorized as success or fail"
+          - is_async_payment_mode: "Indicator whether the payment was going through async payment mode (only available for Pandora)"
+          - is_mixed_payment: "Indicating whether the purchase was using a combination of payment methods, such as gift cards, wallet, etc."
+          - app_version: "App version when the order took place"
+          - is_cyprus: "Indicating whether the purchase was a Cyprus purchase"
+          - data_source: "Data source where we source the data"
+          - alfred_gateway_id: "Type of gateway that Alfred uses on this payment attempt"
+          - gateway_version: "Version of gateway ID that Alfred uses on this payment attempt"
+          - payment_instrument_status: "The status of the instrument used for payment attempt"
+          - routing_condition: "Describes the condition of routing during the payment attempt"
+          - payment_service: "Indicator whether the attempt was going through Payment Central's revamp"
+          - parent_order_payment_service: "Indicator whether the grouped order was going through Payment Central's revamp"
+          - revamp_error_message: "Error message returned when the attempt was using Payments Central revamp"
+          - revamp_operation_status: "Operation status returned from Payments Central revamp"
+          - antifraud_decision: "The decision returned from Antifraud to check fraudulent transactions"
+          - is_parent_order: "Boolean flag if the respective order is a parent order i.e. the latest attempt based on the criteria among the orders with the same GMV amount from the same entity, same vendor/restaurant, same customer given on the same day"
+          - order_gmv_lc: "GMV amount in local currency"
+          - parent_routing_condition: "Identify the routing condition/identifiers for parent_order id in alfred/revamp"
+          - payment_method: "Backend payment method"
+          - payment_method_detailed: "Backend payment method detailed"
+          - payment_status_category: "Payment status categorised in success or fail on this attempt"
+          - shadow_mode: "Defining testing mode of revamp"
+          - vendor_id: "Unique identifier for the vendor/restaurant"
+          - alfred_error_message: "Error message returned when the attempt was using Alfred"
+          - alf_rev_auth_status: "This field contains the authorisation status from revamp and alfred"
+          - alf_rev_latency: "This field contains the latency in ms calculated from the state when the order created until the authorization process completed. Either in revamp and alfred"
+        table_description: "Contains information for Pandora, Talabat, Hungerstation, Glovo and PedidosYa in an order level, with additional data from PSPs and Alfred"
